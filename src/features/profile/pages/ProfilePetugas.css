@@ -1,0 +1,238 @@
+:root {
+  --primary: #1a2a6c;
+  --primary-600: #23409b;
+  --gold: #c7a64a;
+  --text: #1f2937;
+  --muted: #6b7280;
+  --line: #e5e7eb;
+  --bg: #f7f9fe;
+  --white: #ffffff;
+}
+
+.profile-page {
+  min-height: 100vh;
+  background: radial-gradient(1200px 600px at -10% -20%, rgba(26,42,108,0.06), transparent 60%),
+              radial-gradient(1200px 600px at 110% 120%, rgba(26,42,108,0.06), transparent 60%),
+              var(--bg);
+  padding: 32px 24px 48px;
+}
+
+.profile-header {
+  max-width: 1280px;
+  margin: 0 auto 24px;
+  display: grid;
+  grid-template-columns: 120px 1fr 60px;
+  gap: 16px;
+  align-items: center;
+}
+
+.profile-header .brand img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.profile-header .titles h1 {
+  font-size: 36px;
+  color: var(--primary);
+  line-height: 1.2;
+  font-weight: 800;
+}
+
+.profile-header .titles p {
+  color: var(--text);
+  opacity: 0.8;
+  margin-top: 6px;
+}
+
+.profile-header .avatar .avatar-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+}
+
+.profile-form {
+  max-width: 1280px;
+  margin: 0 auto;
+  background: transparent;
+}
+
+.form-grid {
+  display: grid;
+  gap: 16px;
+}
+
+.form-grid.three {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .form-grid.three { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  .form-grid.three { grid-template-columns: 1fr; }
+}
+
+.section {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 20px 20px 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+  border: 1px solid #eef2ff;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--primary);
+  margin-bottom: 14px;
+}
+
+.section-title .icon {
+  font-size: 20px;
+}
+
+.section-title h2 {
+  font-size: 18px;
+}
+
+.grid {
+  display: grid;
+  gap: 16px;
+}
+
+.grid.one { grid-template-columns: 1fr; }
+.grid.two { grid-template-columns: 1fr 1fr; }
+.grid.three { grid-template-columns: repeat(3, 1fr); }
+
+@media (max-width: 1024px) {
+  .grid.three { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 720px) {
+  .profile-header {
+    grid-template-columns: 80px 1fr; 
+  }
+  .profile-header .avatar { display: none; }
+  .grid.two, .grid.three { grid-template-columns: 1fr; }
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.field label.required::after {
+  content: ' *';
+  color: #ef4444;
+}
+
+.field input,
+.field textarea {
+  width: 100%;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--text);
+  outline: none;
+  background: #fbfdff;
+}
+
+.field textarea { resize: vertical; }
+
+.field input:focus,
+.field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(26,42,108,0.12);
+  background: var(--white);
+}
+
+.span-two { grid-column: span 2; }
+.span-three { grid-column: span 3; }
+
+@media (max-width: 1024px) {
+  .span-two, .span-three { grid-column: span 1; }
+}
+
+.file-uploader .upload-box {
+  display: block;
+  border: 2px solid #c7d2fe;
+  border-radius: 16px;
+  padding: 20px;
+  background: #f8fbff;
+  cursor: pointer;
+}
+
+.file-uploader.dashed .upload-box {
+  border-style: dashed;
+}
+
+.file-uploader input[type="file"] {
+  display: none;
+}
+
+.upload-inner {
+  min-height: 140px;
+  border-radius: 14px;
+  border: 2px dashed #c7d2fe;
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+}
+
+.upload-icon { font-size: 22px; }
+
+.upload-text {
+  text-align: center;
+  margin-top: 8px;
+}
+
+.upload-text strong { color: var(--primary); }
+.upload-text span { font-size: 12px; color: var(--muted); }
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  max-width: 1280px;
+  margin: 8px auto 0;
+}
+
+.btn {
+  appearance: none;
+  border: none;
+  outline: none;
+  border-radius: 12px;
+  padding: 12px 18px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn-light {
+  background: #eef2ff;
+  color: var(--primary);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-primary::before {
+  content: '\1F4BE';
+}
