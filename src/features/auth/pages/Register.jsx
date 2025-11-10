@@ -202,7 +202,7 @@ const Register = () => {
             
             <div className="divider">or</div>
             <div className="register">
-              Already have an account? <Link to="/login">Login</Link>
+              Already have an account? <Link to="/auth/login">Login</Link>
             </div>
           </form>
         </div>

@@ -33,7 +33,7 @@ const Login = () => {
             </button>
             <div className="divider">or</div>
             <div className="register">
-              Don't have an account? <Link to="/register">Register</Link>
+              Don't have an account? <Link to="/auth/register">Register</Link>
             </div>
           </form>
         </div>

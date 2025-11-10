@@ -10,10 +10,10 @@ function App() {
     <Router>
       <div className="app">
         <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
           <Route path="/auth/profile-petugas" element={<ProfilePetugas />} />
-          <Route path="/" element={<Navigate to="/login" replace />} />
+          <Route path="/" element={<Navigate to="/auth/login" replace />} />
         </Routes>
       </div>
     </Router>

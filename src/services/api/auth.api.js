@@ -1,4 +1,22 @@
 import { http } from './httpClient';
+export async function login(email, password) {
+  try {
+    if (!email || !password) {
+      throw { message: 'Email dan password wajib diisi' };
+    }
+
+    const response = await http.post('/api/auth/login', { email, password });
+    if (response.data?.access_token) {
+      localStorage.setItem('access_token', response.data.access_token);
+    }
+    
+    return response.data;
+  } catch (error) {
+    console.error('Login error:', error);
+    const errorMessage = error.response?.data?.message || 'Login gagal. Periksa email dan password Anda.';
+    throw { message: errorMessage, status: error.response?.status || 500 };
+  }
+}
 
 export async function checkEmail(email) {
   if (!email) {
