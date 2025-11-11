@@ -6,11 +6,16 @@ export async function login(email, password) {
     }
 
     const response = await http.post('/api/auth/login', { email, password });
-    if (response.data?.access_token) {
-      localStorage.setItem('access_token', response.data.access_token);
+    if (response.data?.token) {
+      localStorage.setItem('access_token', response.data.token);
+      // Return both user data and token
+      return {
+        ...response.data.data,  // user data is in response.data.data
+        token: response.data.token
+      };
     }
     
-    return response.data;
+    return response.data.data || response.data;
   } catch (error) {
     console.error('Login error:', error);
     const errorMessage = error.response?.data?.message || 'Login gagal. Periksa email dan password Anda.';

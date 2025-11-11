@@ -110,7 +110,7 @@ const Register = () => {
       // Redirect to login page after successful registration
       showAlert('Registrasi berhasil! Silakan login dengan akun Anda.', 'success');
       setTimeout(() => {
-        navigate('/login');
+        navigate('/auth/login');
       }, 2000);
       
     } catch (err) {
