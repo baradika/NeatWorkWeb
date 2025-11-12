@@ -4,7 +4,8 @@ import Login from './features/auth/pages/Login';
 import Register from './features/auth/pages/Register';
 import ProfilePetugas from './features/profile/pages/ProfilePetugas';
 import DashboardPetugas from './dashboard/petugas/petugas';
-import AdminDashboard from './dashboard/admin/AdminDashboard';
+import AdminDashboard from './dashboard/admin/admin';
+import VerifikasiPetugas from './dashboard/admin/VerifikasiPetugas';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import StatusPetugas from './features/profile/pages/StatusPetugas';
 import { useEffect } from 'react';
@@ -33,6 +34,14 @@ function App() {
           {/* Protected auth routes for petugas profile & status */}
           <Route path="/dashboard/petugas" element={<DashboardPetugas />} />
           <Route path="/dashboard/admin" element={<AdminDashboard />} />
+          <Route 
+            path="/dashboard/admin/verifikasi" 
+            element={
+              <ProtectedRoute>
+                <VerifikasiPetugas />
+              </ProtectedRoute>
+            } 
+          />
           <Route 
             path="/auth/profile-petugas" 
             element={

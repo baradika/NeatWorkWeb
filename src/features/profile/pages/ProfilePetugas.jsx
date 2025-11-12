@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Alert from '../../../components/Alert';
 import './ProfilePetugas.css';
@@ -23,6 +23,32 @@ const ProfilePetugas = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  // Cek apakah profil sudah ada; jika sudah, redirect ke halaman status
+  useEffect(() => {
+    async function checkExistingProfile() {
+      try {
+        const base = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || '';
+        const token = localStorage.getItem('access_token');
+        const res = await fetch(`${base}/api/check-petugas-profile`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+        if (!res.ok) return; // biarkan akses jika terjadi error pengecekan
+        const data = await res.json();
+        if (data?.has_profile) {
+          navigate('/auth/status-petugas', { replace: true });
+        }
+      } catch (_) {
+        // Abaikan error, tetap biarkan user mengisi
+      }
+    }
+    checkExistingProfile();
+  }, [navigate]);
 
   const handleInputChange = (e) => {
     const { id, value } = e.target;
@@ -83,8 +109,7 @@ const ProfilePetugas = () => {
         return;
       }
       setSuccess('Profil petugas berhasil diajukan. Menunggu verifikasi admin.');
-      // Opsional: arahkan ke dashboard petugas setelah submit
-      // navigate('/dashboard');
+      navigate('/auth/status-petugas', { replace: true });
     } catch (err) {
       setError('Terjadi kesalahan saat mengirim data.');
     } finally {
