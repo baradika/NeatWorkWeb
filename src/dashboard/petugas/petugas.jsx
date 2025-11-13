@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../services/api/auth.api';
 import { Bell, User, CheckCircle, Star, Calendar, Clock, MapPin, X, Check } from 'lucide-react';
 import './petugas.css';
 
 export default function DashboardPetugas() {
+  const navigate = useNavigate();
   const [orders] = useState([
     {
       id: 1,
@@ -22,7 +25,7 @@ export default function DashboardPetugas() {
         {/* Logo */}
         <div className="logo-container">
             <div className="logo-circle">
-                <img src="/public/img/neatworklogo.png" alt="logo" className="logo-image" />
+                <img src="/img/neatworklogo.png" alt="logo" className="logo-image" />
             </div>
             </div>
 
@@ -46,7 +49,7 @@ export default function DashboardPetugas() {
         </nav>
 
         {/* Logout Button */}
-        <button className="nav-item logout-btn">
+        <button className="nav-item logout-btn" onClick={async () => { await logout(); navigate('/auth/login', { replace: true }); }}>
           <span className="nav-icon">🚪</span>
           <span className="nav-label">Keluar</span>
         </button>

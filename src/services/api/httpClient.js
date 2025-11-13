@@ -2,10 +2,12 @@ const BASE_URL = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || '';
 
 async function request(path, { method = 'GET', headers = {}, body } = {}) {
   const url = `${BASE_URL}${path.startsWith('/') ? '' : '/'}${path}`;
+  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('access_token') : null;
   const res = await fetch(url, {
     method,
     headers: {
       'Content-Type': 'application/json',
+      ...(token ? { Authorization: `Bearer ${token}` } : {}),
       ...headers,
     },
     body: body ? JSON.stringify(body) : undefined,
@@ -16,6 +18,14 @@ async function request(path, { method = 'GET', headers = {}, body } = {}) {
   const data = isJson ? await res.json().catch(() => null) : await res.text();
 
   if (!res.ok) {
+    if (res.status === 401) {
+      try {
+        if (typeof localStorage !== 'undefined') {
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('role');
+        }
+      } catch (_) {}
+    }
     const message = isJson && data && (data.message || data.error) ? (data.message || data.error) : `Request failed with ${res.status}`;
     const err = new Error(message);
     err.status = res.status;
@@ -33,3 +43,4 @@ export const http = {
   patch: (path, body, opts) => request(path, { method: 'PATCH', body, ...(opts || {}) }),
   delete: (path, opts) => request(path, { method: 'DELETE', ...(opts || {}) }),
 };
+

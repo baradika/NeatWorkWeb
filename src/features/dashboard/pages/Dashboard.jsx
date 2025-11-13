@@ -25,6 +25,10 @@ const Dashboard = () => {
             return;
           }
           const data = await res.json();
+          if (data.profile_status === 'rejected') {
+            navigate('/auth/profile-petugas', { replace: true });
+            return;
+          }
           if (data.has_profile && data.is_verified) {
             navigate('/dashboard/petugas', { replace: true });
           } else if (data.has_profile && !data.is_verified) {

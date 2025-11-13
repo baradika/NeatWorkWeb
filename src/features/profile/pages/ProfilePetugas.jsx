@@ -41,6 +41,10 @@ const ProfilePetugas = () => {
         if (!res.ok) return; // biarkan akses jika terjadi error pengecekan
         const data = await res.json();
         if (data?.has_profile) {
+          // Jika status ditolak, izinkan akses untuk memperbarui pengajuan
+          if (data.profile_status === 'rejected') {
+            return;
+          }
           navigate('/auth/status-petugas', { replace: true });
         }
       } catch (_) {
@@ -127,7 +131,6 @@ const ProfilePetugas = () => {
           <p>Isi data diri Anda dengan lengkap dan benar</p>
         </div>
         <div className="avatar">
-          <div className="avatar-circle" aria-hidden="true">👤</div>
         </div>
       </header>
 
@@ -138,7 +141,6 @@ const ProfilePetugas = () => {
           {/* Kolom Kiri: Foto KTP, Selfie KTP, NIK */}
           <section className="section">
             <div className="section-title">
-              <span className="icon" aria-hidden>🧾</span>
               <h2>Foto KTP dan Verifikasi</h2>
             </div>
 
@@ -148,7 +150,6 @@ const ProfilePetugas = () => {
                 <label className="upload-box">
                   <input id="ktp_photo" name="ktp_photo" type="file" accept="image/png,image/jpeg" onChange={handleFileChange} />
                   <div className="upload-inner">
-                    <div className="upload-icon" aria-hidden>⬆️</div>
                     <div className="upload-text">
                       <strong>Upload Foto KTP</strong>
                       <span>PNG, JPG (Max. 5MB)</span>
@@ -163,9 +164,8 @@ const ProfilePetugas = () => {
                 <label className="upload-box">
                   <input id="selfie_with_ktp" name="selfie_with_ktp" type="file" accept="image/png,image/jpeg" onChange={handleFileChange} />
                   <div className="upload-inner">
-                    <div className="upload-icon" aria-hidden>📷</div>
                     <div className="upload-text">
-                      <strong>Upload Selfie + KTP</strong>
+                      <strong>Upload Selfie KTP</strong>
                       <span>PNG, JPG (Max. 5MB)</span>
                     </div>
                   </div>
@@ -183,7 +183,6 @@ const ProfilePetugas = () => {
           {/* Kolom Tengah: Data Pribadi */}
           <section className="section">
             <div className="section-title">
-              <span className="icon" aria-hidden>🧑</span>
               <h2>Data Pribadi</h2>
             </div>
 
@@ -210,7 +209,6 @@ const ProfilePetugas = () => {
           {/* Kolom Kanan: Alamat, Bio, Pengalaman */}
           <section className="section">
             <div className="section-title">
-              <span className="icon" aria-hidden>📍</span>
               <h2>Informasi Tambahan</h2>
             </div>
 

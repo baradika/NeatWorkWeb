@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Alert from '../../../components/Alert';
+import { logout } from '../../../services/api/auth.api';
 import './ProfilePetugas.css';
 
 const StatusPetugas = () => {
@@ -49,7 +50,7 @@ const StatusPetugas = () => {
 
   const handleUpdateProfile = () => {
     navigate('/auth/profile-petugas');
-  };
+  };1
 
   return (
     <div className="profile-page">
@@ -62,7 +63,15 @@ const StatusPetugas = () => {
           <p>Periksa status pengajuan profil petugas Anda</p>
         </div>
         <div className="avatar">
-          <div className="avatar-circle" aria-hidden="true">👤</div>
+          <button
+            className="btn"
+            onClick={async () => {
+              await logout();
+              navigate('/auth/login', { replace: true });
+            }}
+          >
+            Keluar
+          </button>
         </div>
       </header>
 

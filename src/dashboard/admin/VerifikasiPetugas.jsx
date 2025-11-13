@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../../services/api/auth.api';
 import '../petugas/petugas.css';
 
 export default function VerifikasiPetugas() {
@@ -166,7 +167,7 @@ export default function VerifikasiPetugas() {
         </nav>
 
         {/* Logout Button */}
-        <button className="nav-item logout-btn" onClick={() => { localStorage.clear(); navigate('/auth/login', { replace: true }); }}>
+        <button className="nav-item logout-btn" onClick={async () => { await logout(); navigate('/auth/login', { replace: true }); }}>
           <span className="nav-icon">🚪</span>
           <span className="nav-label">Keluar</span>
         </button>

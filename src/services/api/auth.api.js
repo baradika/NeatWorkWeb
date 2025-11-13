@@ -54,3 +54,15 @@ export async function registerPetugas({ email, password, password_confirmation }
     throw { message: errorMessage, status: error.response?.status || 500 };
   }
 }
+
+export async function logout() {
+  try {
+    await http.post('/api/auth/logout');
+  } finally {
+    try {
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('role');
+    } catch (_) {}
+  }
+}
+
