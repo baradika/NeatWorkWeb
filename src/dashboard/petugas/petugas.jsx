@@ -32,12 +32,12 @@ export default function DashboardPetugas() {
 
         {/* Menu Items */}
         <nav className="nav-menu">
-          <button className="nav-item nav-item-active">
+          <button className="nav-item"  onClick={() => navigate('/dashboard/admin/petugas')}>
             <span className="nav-icon">📊</span>
             <span className="nav-label">Dashboard</span>
           </button>
           
-          <button className="nav-item">
+          <button className="nav-item"  onClick={() => navigate('/dashboard/admin/RiwayatPekerjaan')}>
             <span className="nav-icon">📜</span>
             <span className="nav-label">Riwayat Pekerjaan</span>
           </button>

@@ -160,7 +160,7 @@ export default function VerifikasiPetugas() {
             <span className="nav-label">Verifikasi Petugas</span>
           </button>
 
-          <button className="nav-item">
+          <button className="nav-item"  onClick={() => navigate('/dashboard/admin/pengaturan')}>
             <span className="nav-icon">⚙️</span>
             <span className="nav-label">Pengaturan</span>
           </button>

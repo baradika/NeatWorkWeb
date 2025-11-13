@@ -1,0 +1,208 @@
+/* ========================================
+   PENGATURAN ADMIN - STYLESHEET
+   ======================================== */
+
+/* Menggunakan base styles dari petugas.css */
+/* Import petugas.css atau gunakan shared styles */
+
+/* ========================================
+   ALERT COMPONENTS
+   ======================================== */
+
+.alert {
+    padding: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alert-error {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: 1px solid #fecaca;
+}
+
+.alert-success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+/* ========================================
+   FORMS GRID LAYOUT
+   ======================================== */
+
+.forms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 24px;
+    margin-top: 24px;
+}
+
+/* ========================================
+   FORM CARD
+   ======================================== */
+
+.form-card {
+    padding: 24px;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    background-color: #f9fafb;
+    transition: box-shadow 0.2s;
+}
+
+.form-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.form-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2937;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+
+.form-content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* ========================================
+   FORM ELEMENTS
+   ======================================== */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-input,
+.form-select {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-select {
+    background-color: white;
+    cursor: pointer;
+}
+
+.form-input::placeholder {
+    color: #9ca3af;
+}
+
+.form-input:disabled,
+.form-select:disabled {
+    background-color: #f3f4f6;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* ========================================
+   BUTTON STYLES
+   ======================================== */
+
+.btn-full {
+    width: 100%;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn:disabled:hover {
+    background-color: inherit;
+}
+
+/* Home Icon */
+.home-icon {
+    font-size: 20px;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .forms-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .forms-grid {
+        gap: 16px;
+    }
+
+    .form-card {
+        padding: 16px;
+    }
+
+    .form-title {
+        font-size: 18px;
+        margin-bottom: 16px;
+    }
+
+    .form-content {
+        gap: 12px;
+    }
+
+    .form-label {
+        font-size: 13px;
+    }
+
+    .form-input,
+    .form-select {
+        padding: 8px;
+        font-size: 13px;
+    }
+}
+
+/* Extra Small Mobile */
+@media (max-width: 480px) {
+    .forms-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .form-card {
+        padding: 12px;
+    }
+
+    .form-title {
+        font-size: 16px;
+    }
+
+    .alert {
+        padding: 12px;
+        font-size: 13px;
+    }
+}
