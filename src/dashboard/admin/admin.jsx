@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { logout } from '../../services/api/auth.api';
 import { Bell, User, CheckCircle, Star, Calendar, Clock, MapPin, X, Check } from 'lucide-react';
 import '../petugas/petugas.css';
 
 export default function AdminDashboard() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
   const [requests] = useState([
     {
       id: 101,
@@ -24,30 +27,45 @@ export default function AdminDashboard() {
         {/* Logo */}
         <div className="logo-container">
           <div className="logo-circle">
-            <img src="/public/img/neatworklogo.png" alt="logo" className="logo-image" />
+            <img src="/img/neatworklogo.png" alt="logo" className="logo-image" />
           </div>
         </div>
 
         {/* Menu Items */}
         <nav className="nav-menu">
-          <button className="nav-item nav-item-active">
+          <button
+            className={`nav-item ${isActive('/dashboard/admin') ? 'nav-item-active' : ''}`}
+            onClick={() => navigate('/dashboard/admin')}
+          >
             <span className="nav-icon">📊</span>
             <span className="nav-label">Dashboard</span>
           </button>
 
-          <button className="nav-item" onClick={() => navigate('/dashboard/admin/verifikasi')}>
+          <button
+            className={`nav-item ${isActive('/dashboard/admin/verifikasi') ? 'nav-item-active' : ''}`}
+            onClick={() => navigate('/dashboard/admin/verifikasi')}
+          >
             <span className="nav-icon">🧑‍💼</span>
             <span className="nav-label">Verifikasi Petugas</span>
           </button>
 
-          <button className="nav-item"  onClick={() => navigate('/dashboard/admin/pengaturan')}>
+          <button
+            className={`nav-item ${isActive('/dashboard/admin/pengaturan') ? 'nav-item-active' : ''}`}
+            onClick={() => navigate('/dashboard/admin/pengaturan')}
+          >
             <span className="nav-icon">⚙️</span>
             <span className="nav-label">Pengaturan</span>
           </button>
         </nav>
 
         {/* Logout Button */}
-        <button className="nav-item logout-btn">
+        <button
+          className="nav-item logout-btn"
+          onClick={async () => {
+            await logout();
+            navigate('/auth/login', { replace: true });
+          }}
+        >
           <span className="nav-icon">🚪</span>
           <span className="nav-label">Keluar</span>
         </button>

@@ -4,7 +4,9 @@ import Login from './features/auth/pages/Login';
 import Register from './features/auth/pages/Register';
 import ProfilePetugas from './features/profile/pages/ProfilePetugas';
 import DashboardPetugas from './dashboard/petugas/petugas';
+import RiwayatPetugas from './dashboard/petugas/RiwayatPekerjaan';
 import AdminDashboard from './dashboard/admin/admin';
+import PengaturanAdmin from './dashboard/admin/pengaturan';
 import VerifikasiPetugas from './dashboard/admin/VerifikasiPetugas';
 import Dashboard from './features/dashboard/pages/Dashboard';
 import StatusPetugas from './features/profile/pages/StatusPetugas';
@@ -33,7 +35,9 @@ function App() {
           <Route path="/auth/register" element={<Register />} />
           {/* Protected auth routes for petugas profile & status */}
           <Route path="/dashboard/petugas" element={<DashboardPetugas />} />
+          <Route path="/dashboard/petugas/riwayat" element={<RiwayatPetugas />} />
           <Route path="/dashboard/admin" element={<AdminDashboard />} />
+          <Route path="/dashboard/admin/pengaturan" element={<PengaturanAdmin />} />
           <Route 
             path="/dashboard/admin/verifikasi" 
             element={

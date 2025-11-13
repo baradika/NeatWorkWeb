@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { logout } from '../../services/api/auth.api';
 import { Bell, User, Star, Calendar, MapPin } from 'lucide-react';
 import './petugas.css';
 
 export default function RiwayatPetugas() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isActive = (path) => location.pathname === path;
+
   const [historyOrders] = useState([
     {
       id: 1,
@@ -53,18 +59,21 @@ export default function RiwayatPetugas() {
         {/* Logo */}
         <div className="logo-container">
           <div className="logo-circle">
-            <img src="/public/img/neatworklogo.png" alt="logo" className="logo-image" />
+            <img src="/img/neatworklogo.png" alt="logo" className="logo-image" />
           </div>
         </div>
 
         {/* Menu Items */}
         <nav className="nav-menu">
-          <button className="nav-item">
+          <button 
+            className={`nav-item ${isActive('/dashboard/petugas') ? 'nav-item-active' : ''}`}
+            onClick={() => navigate('/dashboard/petugas')}
+          >
             <span className="nav-icon">📊</span>
             <span className="nav-label">Dashboard</span>
           </button>
           
-          <button className="nav-item nav-item-active">
+          <button className={`nav-item ${isActive('/dashboard/petugas/riwayat') ? 'nav-item-active' : ''}`}>
             <span className="nav-icon">📜</span>
             <span className="nav-label">Riwayat Pekerjaan</span>
           </button>
@@ -76,7 +85,7 @@ export default function RiwayatPetugas() {
         </nav>
 
         {/* Logout Button */}
-        <button className="nav-item logout-btn">
+        <button className="nav-item logout-btn" onClick={async () => { await logout(); navigate('/auth/login', { replace: true }); }}>
           <span className="nav-icon">🚪</span>
           <span className="nav-label">Keluar</span>
         </button>

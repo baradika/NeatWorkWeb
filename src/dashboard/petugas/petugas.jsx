@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { logout } from '../../services/api/auth.api';
 import { Bell, User, CheckCircle, Star, Calendar, Clock, MapPin, X, Check } from 'lucide-react';
 import './petugas.css';
 
 export default function DashboardPetugas() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname === path;
+
   const [orders] = useState([
     {
       id: 1,
@@ -32,12 +36,18 @@ export default function DashboardPetugas() {
 
         {/* Menu Items */}
         <nav className="nav-menu">
-          <button className="nav-item"  onClick={() => navigate('/dashboard/admin/petugas')}>
+          <button 
+            className={`nav-item ${isActive('/dashboard/petugas') ? 'nav-item-active' : ''}`}
+            onClick={() => navigate('/dashboard/petugas')}
+          >
             <span className="nav-icon">📊</span>
             <span className="nav-label">Dashboard</span>
           </button>
           
-          <button className="nav-item"  onClick={() => navigate('/dashboard/admin/RiwayatPekerjaan')}>
+          <button 
+            className={`nav-item ${isActive('/dashboard/petugas/riwayat') ? 'nav-item-active' : ''}`}
+            onClick={() => navigate('/dashboard/petugas/riwayat')}
+          >
             <span className="nav-icon">📜</span>
             <span className="nav-label">Riwayat Pekerjaan</span>
           </button>

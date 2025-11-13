@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../services/api/auth.api';
-import './PengaturanAdmin.css';
+import './pengaturan.css';
 
 export default function PengaturanAdmin() {
   const navigate = useNavigate();
