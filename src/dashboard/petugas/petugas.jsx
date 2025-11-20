@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { logout } from '../../services/api/auth.api';
 import { Bell, User, CheckCircle, Star, Calendar, Clock, MapPin, X, Check } from 'lucide-react';
@@ -10,17 +10,90 @@ export default function DashboardPetugas() {
 
   const isActive = (path) => location.pathname === path;
 
-  const [orders] = useState([
-    {
-      id: 1,
-      name: 'Ahmad Hilal',
-      service: 'Deep Cleaning',
-      date: '02-03-2025',
-      time: '09:00',
-      location: 'Cipayung, Jakarta Timur',
-      status: 'Menunggu'
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [actionLoading, setActionLoading] = useState(null);
+
+  useEffect(() => {
+    async function fetchAvailable() {
+      try {
+        setLoading(true);
+        setError('');
+        const base = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || '';
+        const token = localStorage.getItem('access_token');
+        const res = await fetch(`${base}/api/petugas/available-bookings?per_page=20`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        });
+        const isJson = (res.headers.get('content-type') || '').includes('application/json');
+        const data = isJson ? await res.json().catch(() => ({})) : {};
+        if (!res.ok) {
+          throw new Error(data?.message || 'Gagal memuat pemesanan');
+        }
+        const items = Array.isArray(data?.data?.data) ? data.data.data : (Array.isArray(data?.data) ? data.data : []);
+        setOrders(items);
+      } catch (e) {
+        setError(e.message || 'Terjadi kesalahan');
+      } finally {
+        setLoading(false);
+      }
     }
-  ]);
+    fetchAvailable();
+  }, []);
+
+  async function acceptOrder(id) {
+    try {
+      setActionLoading(id);
+      const base = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || '';
+      const token = localStorage.getItem('access_token');
+      const res = await fetch(`${base}/api/petugas/bookings/${id}/accept`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+      const isJson = (res.headers.get('content-type') || '').includes('application/json');
+      const data = isJson ? await res.json().catch(() => ({})) : {};
+      if (!res.ok) throw new Error(data?.message || 'Gagal menerima pemesanan');
+      // Refresh list
+      setOrders(prev => prev.filter(o => o.id !== id));
+    } catch (e) {
+      setError(e.message || 'Terjadi kesalahan');
+    } finally {
+      setActionLoading(null);
+    }
+  }
+
+  async function rejectOrder(id) {
+    try {
+      setActionLoading(id);
+      const base = import.meta.env.VITE_API_URL?.replace(/\/$/, '') || '';
+      const token = localStorage.getItem('access_token');
+      const res = await fetch(`${base}/api/petugas/bookings/${id}/reject`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json',
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      });
+      const isJson = (res.headers.get('content-type') || '').includes('application/json');
+      const data = isJson ? await res.json().catch(() => ({})) : {};
+      if (!res.ok) throw new Error(data?.message || 'Gagal menolak pemesanan');
+      // Remove from list
+      setOrders(prev => prev.filter(o => o.id !== id));
+    } catch (e) {
+      setError(e.message || 'Terjadi kesalahan');
+    } finally {
+      setActionLoading(null);
+    }
+  }
 
   return (
     <div className="dashboard-container">
@@ -118,44 +191,78 @@ export default function DashboardPetugas() {
               <h2 className="section-title">Pesan Masuk</h2>
             </div>
 
-            {/* Order Card */}
-            {orders.map(order => (
-              <div key={order.id} className="order-card">
-                <div className="order-header">
-                  <div className="order-info">
-                    <h3 className="order-name">{order.name}</h3>
-                    <p className="order-service">{order.service}</p>
+            {error && (
+              <div style={{ color: '#b91c1c', marginBottom: 12 }}>{error}</div>
+            )}
+            {loading ? (
+              <div>Memuat...</div>
+            ) : orders.length === 0 ? (
+              <div>Tidak ada pemesanan tersedia</div>
+            ) : (
+              orders.map(order => (
+                <div key={order.id} className="order-card">
+                  <div className="order-header">
+                    <div className="order-info">
+                      <h3 className="order-name">{order.jenis_service?.nama_service || order.jenisService?.nama_service || 'Layanan'}</h3>
+                      <p className="order-service">Preferensi Gender: {order.preferred_gender === 'any' ? 'Bebas' : (order.preferred_gender === 'male' ? 'Laki-laki' : 'Perempuan')}</p>
+                    </div>
+                    <span className="order-status">{order.status}</span>
                   </div>
-                  <span className="order-status">{order.status}</span>
-                </div>
 
-                <div className="order-details">
-                  <div className="detail-item">
-                    <Calendar className="detail-icon" />
-                    <span>{order.date}</span>
+                  <div className="order-details">
+                    <div className="detail-item">
+                      <Calendar className="detail-icon" />
+                      <span>{(() => {
+                        try {
+                          const d = new Date(order.service_date);
+                          if (isNaN(d)) return order.service_date || '-';
+                          const y = d.getFullYear();
+                          const m = String(d.getMonth() + 1).padStart(2, '0');
+                          const day = String(d.getDate()).padStart(2, '0');
+                          return `${y}-${m}-${day}`;
+                        } catch { return order.service_date || '-'; }
+                      })()}</span>
+                    </div>
+                    <div className="detail-item">
+                      <Clock className="detail-icon" />
+                      <span>{(() => {
+                        if (!order.service_time) return '-';
+                        try {
+                          const start = new Date(`${order.service_date}T${order.service_time}`);
+                          if (isNaN(start)) return order.service_time;
+                          const end = new Date(start.getTime() + (Number(order.duration || 0) * 60 * 60 * 1000));
+                          const fmt = (t) => `${String(t.getHours()).padStart(2,'0')}:${String(t.getMinutes()).padStart(2,'0')}`;
+                          return `${fmt(start)} - ${fmt(end)}`;
+                        } catch { return order.service_time; }
+                      })()}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span style={{ fontWeight: 600, marginRight: 6 }}>Durasi</span>
+                      <span>{(order.duration ?? 0) > 0 ? `${order.duration} jam` : '-'}</span>
+                    </div>
+                    <div className="detail-item">
+                      <MapPin className="detail-icon" />
+                      <span>{order.alamat}</span>
+                    </div>
+                    <div className="detail-item">
+                      <span style={{ fontWeight: 600, marginRight: 6 }}>Jumlah Petugas</span>
+                      <span>{order.people_count || 1}</span>
+                    </div>
                   </div>
-                  <div className="detail-item">
-                    <Clock className="detail-icon" />
-                    <span>{order.time}</span>
-                  </div>
-                  <div className="detail-item">
-                    <MapPin className="detail-icon" />
-                    <span>{order.location}</span>
-                  </div>
-                </div>
 
-                <div className="order-actions">
-                  <button className="btn btn-reject">
-                    <X className="btn-icon" />
-                    Tolak
-                  </button>
-                  <button className="btn btn-accept">
-                    <Check className="btn-icon" />
-                    Terima
-                  </button>
+                  <div className="order-actions">
+                    <button className="btn btn-reject" disabled={actionLoading === order.id} onClick={() => rejectOrder(order.id)}>
+                      <X className="btn-icon" />
+                      Tolak
+                    </button>
+                    <button className="btn btn-accept" disabled={actionLoading === order.id} onClick={() => acceptOrder(order.id)}>
+                      <Check className="btn-icon" />
+                      Terima
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>

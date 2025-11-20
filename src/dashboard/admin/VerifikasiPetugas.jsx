@@ -227,6 +227,10 @@ export default function VerifikasiPetugas() {
                       <span style={{ fontWeight: 600 }}>Alamat</span>
                       <span>{p.address}</span>
                     </div>
+                    <div className="detail-item" style={{ flexDirection: 'column', alignItems: 'flex-start' }}>
+                      <span style={{ fontWeight: 600 }}>Jenis Kelamin</span>
+                      <span>{p.gender === 'male' ? 'Laki-laki' : p.gender === 'female' ? 'Perempuan' : '-'}</span>
+                    </div>
                   </div>
 
                   <div className="order-details" style={{ gap: 24 }}>

@@ -6,6 +6,7 @@ import ProfilePetugas from './features/profile/pages/ProfilePetugas';
 import DashboardPetugas from './dashboard/petugas/petugas';
 import RiwayatPetugas from './dashboard/petugas/RiwayatPekerjaan';
 import AdminDashboard from './dashboard/admin/admin';
+import JenisServiceAdmin from './dashboard/admin/JenisService';
 import PengaturanAdmin from './dashboard/admin/pengaturan';
 import VerifikasiPetugas from './dashboard/admin/VerifikasiPetugas';
 import Dashboard from './features/dashboard/pages/Dashboard';
@@ -38,6 +39,14 @@ function App() {
           <Route path="/dashboard/petugas/riwayat" element={<RiwayatPetugas />} />
           <Route path="/dashboard/admin" element={<AdminDashboard />} />
           <Route path="/dashboard/admin/pengaturan" element={<PengaturanAdmin />} />
+          <Route 
+            path="/dashboard/admin/jenis-service" 
+            element={
+              <ProtectedRoute>
+                <JenisServiceAdmin />
+              </ProtectedRoute>
+            } 
+          />
           <Route 
             path="/dashboard/admin/verifikasi" 
             element={

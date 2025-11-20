@@ -42,6 +42,14 @@ export default function AdminDashboard() {
           </button>
 
           <button
+            className={`nav-item ${isActive('/dashboard/admin/jenis-service') ? 'nav-item-active' : ''}`}
+            onClick={() => navigate('/dashboard/admin/jenis-service')}
+          >
+            <span className="nav-icon">🧰</span>
+            <span className="nav-label">Jenis Service</span>
+          </button>
+
+          <button
             className={`nav-item ${isActive('/dashboard/admin/verifikasi') ? 'nav-item-active' : ''}`}
             onClick={() => navigate('/dashboard/admin/verifikasi')}
           >

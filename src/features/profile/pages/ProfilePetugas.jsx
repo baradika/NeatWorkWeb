@@ -10,7 +10,9 @@ const ProfilePetugas = () => {
     full_name: '',
     date_of_birth: '',
     phone_number: '',
-    address: ''
+    address: '',
+    gender: '',
+    work_experience: ''
   });
   const [files, setFiles] = useState({
     ktp_photo: null,
@@ -24,7 +26,6 @@ const ProfilePetugas = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Cek apakah profil sudah ada; jika sudah, redirect ke halaman status
   useEffect(() => {
     async function checkExistingProfile() {
       try {
@@ -71,7 +72,7 @@ const ProfilePetugas = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
-    if (!form.ktp_number || !form.full_name || !form.date_of_birth || !form.phone_number || !form.address) {
+    if (!form.ktp_number || !form.full_name || !form.date_of_birth || !form.phone_number || !form.address || !form.gender) {
       setError('Semua field wajib diisi.');
       return;
     }
@@ -91,6 +92,8 @@ const ProfilePetugas = () => {
       fd.append('date_of_birth', form.date_of_birth);
       fd.append('phone_number', form.phone_number);
       fd.append('address', form.address);
+      fd.append('gender', form.gender);
+      if (form.work_experience) fd.append('work_experience', form.work_experience);
 
       const res = await fetch(`${base}/api/form-profile-petugas`, {
         method: 'POST',
@@ -200,13 +203,17 @@ const ProfilePetugas = () => {
                 <input id="phone_number" type="tel" placeholder="08XXXXXXXXXX" value={form.phone_number} onChange={handleInputChange} />
               </div>
               <div className="field">
-                <label className="required" htmlFor="email">Email</label>
-                <input id="email" type="email" placeholder="email@example.com" />
+                <label className="required" htmlFor="gender">Jenis Kelamin</label>
+                <select id="gender" value={form.gender} onChange={handleInputChange}>
+                  <option value="">Pilih Jenis Kelamin</option>
+                  <option value="male">Laki-laki</option>
+                  <option value="female">Perempuan</option>
+                </select>
               </div>
             </div>
           </section>
 
-          {/* Kolom Kanan: Alamat, Bio, Pengalaman */}
+          {/* Kolom Kanan: Alamat, Pengalaman */}
           <section className="section">
             <div className="section-title">
               <h2>Informasi Tambahan</h2>
@@ -218,12 +225,8 @@ const ProfilePetugas = () => {
                 <textarea id="address" rows={4} placeholder="Jalan, No rumah, RT/RW dll" value={form.address} onChange={handleInputChange} />
               </div>
               <div className="field">
-                <label htmlFor="bio">Bio Singkat</label>
-                <textarea id="bio" rows={4} placeholder="Ceritakan Tentang Diri Anda ..." />
-              </div>
-              <div className="field">
-                <label htmlFor="pengalaman">Pengalaman Kerja/Pendidikan</label>
-                <textarea id="pengalaman" rows={4} placeholder="Jelaskan Pengalaman Kerja atau Pendidikan Anda..." />
+                <label htmlFor="work_experience">Pengalaman Kerja/Pendidikan</label>
+                <textarea id="work_experience" rows={4} placeholder="Jelaskan Pengalaman Kerja atau Pendidikan Anda..." value={form.work_experience} onChange={handleInputChange} />
               </div>
             </div>
           </section>
